@@ -6,6 +6,17 @@ function App() {
   const [people, setPeople] = useState(data);
   const [index, setIndex] = useState(0);
 
+  useEffect(() => {
+    let lastIndex = people.length - 1;
+
+    if (index < 0) {
+      setIndex(lastIndex);
+    }
+    if (index > lastIndex) {
+      setIndex(0);
+    }
+  }, [people, index]);
+
   return (
     <section className="section">
       <div className="title">
@@ -27,7 +38,7 @@ function App() {
             position = "lastSlide";
           }
           return (
-            <article className={position}>
+            <article key={id} className={position}>
               <img src={image} alt={name} className="person-img" />
               <h4>{name}</h4>
               <p className="title">{title}</p>
@@ -36,10 +47,20 @@ function App() {
             </article>
           );
         })}
-        <button className="prev">
+        <button
+          className="prev"
+          onClick={() => {
+            setIndex(index - 1);
+          }}
+        >
           <FiChevronLeft />
         </button>
-        <button className="next">
+        <button
+          className="next"
+          onClick={() => {
+            setIndex(index + 1);
+          }}
+        >
           <FiChevronRight />
         </button>
       </div>
